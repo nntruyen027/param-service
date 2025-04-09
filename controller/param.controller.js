@@ -1,6 +1,5 @@
 const Param = require('../model/param.model');
 
-// Tự động parse kiểu value dựa vào dataType
 const parseValue = (dataType, value) => {
     try {
         switch (dataType) {
@@ -10,6 +9,11 @@ const parseValue = (dataType, value) => {
                 return value === 'true' || value === true;
             case 'json':
                 return typeof value === 'object' ? value : JSON.parse(value);
+            case 'array':
+                if (Array.isArray(value)) return value;
+                const parsed = JSON.parse(value);
+                if (!Array.isArray(parsed)) throw new Error('Giá trị không phải là mảng');
+                return parsed;
             case 'string':
             default:
                 return String(value);
@@ -19,6 +23,7 @@ const parseValue = (dataType, value) => {
         return value;
     }
 };
+
 
 exports.getAll = async (req, res) => {
     try {
