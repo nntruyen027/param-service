@@ -5,7 +5,7 @@ const ParamSchema = new mongoose.Schema(
         key: { type: String, required: true, unique: true },
         dataType: {
             type: String,
-            enum: ['string', 'number', 'boolean', 'json'],
+            enum: ['string', 'number', 'boolean', 'json', 'array'],
             required: true,
         },
         value: { type: mongoose.Schema.Types.Mixed, required: true },
