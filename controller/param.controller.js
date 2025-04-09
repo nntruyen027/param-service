@@ -122,3 +122,22 @@ exports.sendOtp = async (req, res) => {
         res.status(500).json({ message: 'Không thể gửi OTP' });
     }
 };
+
+exports.getValueByKey = async (req, res) => {
+    try {
+        const key = req.params.key;
+
+        const param = await Param.findOne({ key });
+        if (!param) return res.status(404).json({ message: 'Không tìm thấy tham số' });
+
+        const parsedValue = parseValue(param.dataType, param.value);
+
+        res.json({
+            key: param.key,
+            value: parsedValue,
+        });
+    } catch (err) {
+        console.error('Lỗi getValueByKey:', err);
+        res.status(500).json({ message: 'Không thể lấy tham số theo key' });
+    }
+};
